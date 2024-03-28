@@ -1,7 +1,7 @@
 import React from 'react'
-import Banner from '../components/Home/Banner'
-import Catagories from '../components/Home/Categories'
-import SpecialDishes from '../components/Home/SpecialDishes'
+import Banner from '../../components/Home/Banner'
+import Catagories from '../../components/Home/Categories'
+import SpecialDishes from '../../components/Home/SpecialDishes'
 
 const Home = () => {
   return (

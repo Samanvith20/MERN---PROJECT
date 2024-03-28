@@ -1,5 +1,5 @@
 import React from "react";
-import image from "../../assets/logo .png"
+import image from "../../assets/logo .png";
 
 const Footer = () => {
   return (
@@ -32,7 +32,7 @@ const Footer = () => {
           <a className="link link-hover">Social media</a>
         </nav>
       </footer>
-        <hr />
+      <hr />
       <footer className="footer items-center xl:px-24 px-4 py-4 mt-2">
         <aside className="items-center grid-flow-col">
           <p>Copyright © 2024 - All right reserved</p>
