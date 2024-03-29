@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo .png";
+import { FaRegUser } from "react-icons/fa";
+import Modal from "./Modal";
 
 const Navbar = () => {
   const [isSticky, setSticky] = useState(false);
@@ -126,6 +128,12 @@ const Navbar = () => {
               </div>
             </label>
             {/* Login Button */}
+            <button onClick={()=>document.getElementById('my_modal_5').showModal()}
+             className="btn flex items-center gap-2 rounded-full px-6 bg-green text-white">
+            <FaRegUser /> Login
+            <Modal/>
+          </button>
+        
           </div>
         </div>
       </div>

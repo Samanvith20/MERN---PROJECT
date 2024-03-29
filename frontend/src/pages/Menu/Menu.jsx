@@ -65,7 +65,9 @@ const Menu = () => {
    // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filtereditems.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filtereditems ? filtereditems.slice(indexOfFirstItem, indexOfLastItem) : [];
+
+
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
@@ -161,7 +163,7 @@ const Menu = () => {
 
           {/* product card */}
           <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4 ">
-            {filtereditems && filtereditems.map((item, index) => (
+            {currentItems && currentItems.map((item, index) => (
               <Card key={index} item={item} />
             ))}
           </div>
@@ -169,7 +171,7 @@ const Menu = () => {
       </div>
              {/* Pagination */}
              <div className="flex justify-center my-8 flex-wrap gap-2">
-        {Array.from({ length: Math.ceil(filtereditems.length / itemsPerPage) }).map((_, index) => (
+        {Array.from({ length: Math.ceil( filtereditems&&filtereditems.length / itemsPerPage) }).map((_, index) => (
           <button
             key={index + 1}
             onClick={() => paginate(index + 1)}
