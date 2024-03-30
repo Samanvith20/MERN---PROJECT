@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { FaFacebookF, FaGithub, FaGoogle } from 'react-icons/fa'
 import { useForm } from "react-hook-form";
-import {Link} from "react-router-dom"
+import {Link, useLocation, useNavigate} from "react-router-dom"
+import { AuthContext } from '../../Firebase/AuthProvider';
 
 const Modal = () => {
      //react hook form
@@ -10,6 +11,46 @@ const Modal = () => {
     handleSubmit, reset,
     formState: { errors },
   } = useForm();
+  const [errorMessage, seterrorMessage] = useState("");
+  const { signUpWithGmail, login } = useContext(AuthContext);
+  const navigate = useNavigate();
+ // console.log(navigate);
+  const location = useLocation();
+  //console.log(location);
+  const from = location.state?.from?.pathname || "/";
+  const onSubmit = (data) => {
+    const email = data.email;
+    const password = data.password;
+    console.log(email,password);
+    login(email, password)
+      .then((result) => {
+        // Signed in
+        const user = result.user;
+        // console.log(user);
+        alert("Login successful!");
+        navigate(from, { replace: true });
+        document.getElementById("my_modal_5").close()
+        // ...
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        seterrorMessage("Please provide valid email & password!");
+      });
+      reset()
+
+  };
+
+  // login with google
+  const handleRegister = () => {
+    signUpWithGmail()
+      .then((result) => {
+        const user = result.user;
+        navigate(from, { replace: true });
+        document.getElementById("my_modal_5").close()
+      })
+      .catch((error) => console.log(error));
+  };
+
   return (
     <div>
       <dialog id="my_modal_5" className="modal modal-middle sm:modal-middle">
@@ -18,11 +59,10 @@ const Modal = () => {
           <form
             className="card-body"
             method="dialog"
-            // onSubmit={handleSubmit(onSubmit)}
+             onSubmit={handleSubmit(onSubmit)}
           >
            <h3 className="font-bold text-lg">
-            <span className=' bg-black'>Please Login!
-            </span></h3>
+           Please Login </h3>
 
 
             {/* email */}
@@ -57,7 +97,13 @@ const Modal = () => {
             </div>
 
             {/* show errors */}
-           
+            {errorMessage ? (
+              <p className="text-red text-xs italic">
+                Provide a correct username & password.
+              </p>
+            ) : (
+              ""
+            )}
 
             {/* submit btn */}
             <div className="form-control mt-4">
@@ -78,7 +124,7 @@ const Modal = () => {
             </div>
 
             <p className="text-center my-2">
-               <span className='bg-blue-300'>Do not have an account? </span>
+               Do not have an account? 
               <Link to="/signup" className="underline text-red ml-1">
                 Signup Now
               </Link>
@@ -86,7 +132,7 @@ const Modal = () => {
           </form>
           <div className="text-center space-x-3 mb-5">
             <button
-            //   onClick={handleRegister}
+              onClick={handleRegister}
               className="btn btn-circle hover:bg-green hover:text-white"
             >
               <FaGoogle />

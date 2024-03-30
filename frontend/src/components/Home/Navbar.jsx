@@ -2,9 +2,14 @@ import React, { useEffect, useState } from "react";
 import logo from "../../assets/logo .png";
 import { FaRegUser } from "react-icons/fa";
 import Modal from "./Modal";
+import { useContext } from "react";
+import { AuthContext } from "../../Firebase/AuthProvider";
+import Profile from "./Profile";
 
 const Navbar = () => {
   const [isSticky, setSticky] = useState(false);
+  const {user, loading} = useContext(AuthContext);
+  //console.log(user);
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
@@ -20,6 +25,7 @@ const Navbar = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
+
   }, []);
   return (
     <header className="max-w-screen-2xl container mx-auto fixed top-0 left-0 right-0 transition-all duration-300 ease-in-out">
@@ -127,13 +133,16 @@ const Navbar = () => {
                 <span className="badge badge-sm indicator-item">0</span>
               </div>
             </label>
-            {/* Login Button */}
-            <button onClick={()=>document.getElementById('my_modal_5').showModal()}
-             className="btn flex items-center gap-2 rounded-full px-6 bg-green text-white">
+            {/* login button */}
+
+          { 
+            user ? <>
+           <Profile user={user}/>
+          </> : <button onClick={()=>document.getElementById('my_modal_5').showModal()} className="btn flex items-center gap-2 rounded-full px-6 bg-green text-white">
             <FaRegUser /> Login
-            <Modal/>
           </button>
-        
+          }
+          <Modal/>
           </div>
         </div>
       </div>

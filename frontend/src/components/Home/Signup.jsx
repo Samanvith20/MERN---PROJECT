@@ -1,11 +1,17 @@
-import React from "react";
-import { Link, } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useLocation, useNavigate, } from "react-router-dom";
 import { FaFacebookF, FaGithub, FaGoogle,  } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import { AuthContext } from "../../Firebase/AuthProvider";
 
 
 const Signup = () => {
-  
+  const { signUpWithGmail, createUser } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
 
   const {
     register,
@@ -13,13 +19,41 @@ const Signup = () => {
     formState: { errors },
   } = useForm();
 
+  const onSubmit = (data) => {
+    const email = data.email;
+    const password = data.password;
+    // console.log(email, password)
+    createUser(email, password).then((result) => {
+      // Signed up 
+      const user = result.user;
+      alert("Signin successful!");
+      navigate(from, { replace: true });
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ..
+    });
+  };
+
+    // login with google
+    const handleRegister = () => {
+      signUpWithGmail()
+        .then((result) => {
+          const user = result.user;
+          navigate(from, { replace: true });
+        })
+        .catch((error) => console.log(error));
+    };
  
 
   
   return (
     <div className="max-w-md bg-white shadow w-full mx-auto flex items-center justify-center my-20">
       <div className="mb-5">
-        <form className="card-body" >
+        <form className="card-body" 
+         onSubmit={handleSubmit(onSubmit)}
+        >
           <h3 className="font-bold text-lg">Please Create An Account!</h3>
           {/* name */}
           <div className="form-control">
@@ -86,7 +120,7 @@ const Signup = () => {
         </form>
         <div className="text-center space-x-3">
           <button
-            // onClick={handleRegister}
+             onClick={handleRegister}
             className="btn btn-circle hover:bg-green hover:text-white"
           >
             <FaGoogle />

@@ -9,7 +9,7 @@ import { FaAngleRight, FaAngleLeft  } from "react-icons/fa6";
 import Card from "./Card";
 
 const SampleNextArrow = (props) => {
-    console.log(props);
+   // console.log(props);
   const { className, style, onClick } = props;
   return (
     <div
