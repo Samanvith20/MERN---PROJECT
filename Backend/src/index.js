@@ -55,26 +55,43 @@ res.status(201)
 });
 
 // Define a route handler function to get cart items by user email
-const getCartItemsByEmail = async (req, res) => {
-    try {
-        const email = req.query.email;
-        //console.log(email);
+      // get carts using email
+    app.get('/carts', async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+      const result = await Cart.find(query)
+      res.send(result);
+    });
+ 
 
-        // Define the filter to find cart items by email
-        const filter = { email: email };
 
-        // Query the database to find cart items matching the filter
-        const result = await Cart.find(filter)
+// delete a cart
+app.delete('/carts/:id', async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: new ObjectId(id) }
+  const result = await Cart.deleteOne(query);
+  res.send(result);
+})
 
-        // Send the response with the found cart items
-        res.status(200).json({ success: true, message: "Cart items found", data: result });
-    } catch (error) {
-        console.error("Error fetching cart items:", error);
-        res.status(500).json({ success: false, message: "Failed to fetch cart items", error: error.message });
+// update cart quantity
+app.put('/carts/:id', async (req, res) => {
+  const itemId = new ObjectId(req.params.id);
+  const { quantity } = req.body;
+
+  try {
+    const result = await Cart.updateOne(
+      { _id: itemId },
+      { $set: { quantity: parseInt(quantity, 10) } }
+    );
+
+    if (result.modifiedCount === 1) {
+      res.status(200).json({ message: 'Quantity updated successfully' });
+    } else {
+      res.status(404).json({ message: 'Item not found' });
     }
-};
-
-// Register the route handler for the GET request to "/cart"
-app.get("/cart", getCartItemsByEmail);
-
+  } catch (error) {
+    console.error('Error updating quantity:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 export default app;

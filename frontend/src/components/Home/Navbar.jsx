@@ -12,7 +12,7 @@ const Navbar = () => {
   const {user, loading} = useContext(AuthContext);
   //console.log(user);
   const{cart, refetch}=useCart()
-  console.log(cart);
+  console.log(cart?.data?.message);
 
   useEffect(() => {
     const handleScroll = () => {

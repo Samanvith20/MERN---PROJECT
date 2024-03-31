@@ -10,7 +10,7 @@ const useCart = () => {
         queryKey: ['cart', user?.email],
         queryFn: async () => {
             try {
-                const res = await fetch(`http://localhost:5000/cart?email=${user?.email}`);
+                const res = await fetch(`http://localhost:5000/carts?email=${user?.email}`);
                 
                 if (!res.ok) {
                     throw new Error('Failed to fetch cart items');
