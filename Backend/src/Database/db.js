@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 const ConnectDb= async ()=>{
   try {
     if (mongoose.connection.readyState !== 0) return; // Already connected
-    const db = await mongoose.connect(`${process.env.MONGO_URL}`, {
+    const db = await mongoose.connect(`${process.env.MONGODB_URL}`, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });

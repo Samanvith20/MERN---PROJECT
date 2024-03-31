@@ -1,14 +1,86 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { FaHeart } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { AuthContext } from '../../Firebase/AuthProvider';
+import useCart from '../../hooks/usecart';
+import Swal from 'sweetalert2'
 const Card = ({item}) => {
-    const { name, image, price, recipe, _id } = item;
-    // console.log(item)
+    
+    const{user}=useContext(AuthContext)
+     const{cart,refetch}=useCart()
   const [isHeartFilled, setIsHeartFilled] = useState(false);
+
+   
+  //handleCartFunctionality
+  const handleCart = (item) => {
+    if (user && user.email) {
+      const clickedItems = {
+        menuItemId: item._id, 
+        name: item.name,
+        quantity: 1,
+        image: item.image,
+        price: item.price,
+        email: user.email
+      };
+  
+      fetch("http://localhost:5000/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(clickedItems) 
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        if (refetch) {
+          refetch();
+        }
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Food added on the cart.',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        let errorMessage = 'An error occurred while adding food to the cart.';
+        if (error.response && error.response.data && error.response.data.message) {
+          errorMessage = error.response.data.message;
+        }
+        Swal.fire({
+          position: 'center',
+          icon: 'warning',
+          title: errorMessage,
+          showConfirmButton: false,
+          timer: 1500
+        });
+      });
+    } else {
+      Swal.fire({
+        title: 'Please login to order the food',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Login now!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Navigate('/login', {state: {from: location}});
+        }
+      });
+    }
+  }
+  
+  
+  
 
   const handleHeartClick = () => {
     setIsHeartFilled(!isHeartFilled);
   };
+
   return (
     <div to={`/menu/${item._id}`} className="card shadow-xl relative mr-5 md:my-5">
     <div
@@ -31,7 +103,9 @@ const Card = ({item}) => {
         <h5 className="font-semibold">
           <span className="text-sm text-red">$ </span> {item.price}
         </h5>
-        <button  className="btn bg-green-700 text-white">Add to Cart </button>
+        <Link to ="/cart">
+        <button  className="btn bg-green text-white"  onClick={()=>handleCart(item)}>Add to Cart </button>
+        </Link>
       </div>
     </div>
   </div>

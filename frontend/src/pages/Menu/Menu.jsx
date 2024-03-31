@@ -93,7 +93,7 @@ const Menu = () => {
               Greek Salad, Lasagne, Butternut Pumpkin, Tokusen Wagyu, Olivas
               Rellenas and more for a moderate cost
             </p>
-            <button className="bg-green-900 font-semibold btn text-white px-8 py-3 rounded-full">
+            <button className="bg-green font-semibold btn text-white px-8 py-3 rounded-full">
               Order Now
             </button>
           </div>
