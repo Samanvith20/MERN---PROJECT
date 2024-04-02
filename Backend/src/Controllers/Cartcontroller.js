@@ -1,13 +1,16 @@
-import { Cart } from "../models/Cart.model";
-import AsyncHandler from "../utils/asyncHandler";
-import { ApiError } from "../utils/apiError";
-import { ApiResponse } from "../utils/apiResponse";
+import { Cart } from "../models/Cart.model.js";
+import AsyncHandler from "../utils/asyncHandler.js";
+import { ApiError } from "../utils/apiError.js";
+import { ApiResponse } from "../utils/apiResponse.js";
 
 // get Cart using email
  export const getCartByEmail = AsyncHandler(async(req, res) => {
     try {
         const email = req.query.email;
         // console.log(email);
+        if(!email){
+            throw new ApiError("Email is Invalid(or)not exits")
+        }
         const query = {email: email};
         const result = await Cart.find(query).exec();
         return res.status(200).json(new ApiResponse(200, result))
@@ -18,6 +21,9 @@ import { ApiResponse } from "../utils/apiResponse";
   // post a cart when add-to-cart btn clicked 
    export const addToCart = AsyncHandler(async(req, res) => {
     const {menuItemId, name, recipe, image, price, quantity,email } = req.body;
+    if(!menuItemId||!name||!email){
+           throw new ApiError("All fields are required")
+    }
     try {
         // exiting menu item
         const existingCartItem = await Cart.findOne({menuItemId});
@@ -44,7 +50,7 @@ import { ApiResponse } from "../utils/apiResponse";
         if(!deletedCart){
             return res.status(401).json(new ApiResponse(401,"Cart Items not found!"))
         }
-        res.status(200).json(new ApiResponse(200,"Cart Item Deleted Successfully!"))
+        res.status(200).json(new ApiResponse(200, deleteCart,"Cart Item Deleted Successfully!"))
 
     } catch (error) {
         res.status(500).json(new ApiError(500,"Cart Item delteing Failed"));
@@ -65,7 +71,7 @@ import { ApiResponse } from "../utils/apiResponse";
         if(!updatedCart){
             return res.status(404).json({ message: "Cart Item not found"})
         }
-        res.status(200).json(new ApiError(200, "Cart item was Updated Successfully"))
+        res.status(200).json(new ApiError(200, updateCart,"Cart item was Updated Successfully"))
     } catch (error) {
         res.status(500).json(new ApiError(500,"Updating the cart was failed"));
     }
