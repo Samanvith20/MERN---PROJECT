@@ -84,15 +84,11 @@ const CartPage = () => {
   };
 
   // Calculate the cart subtotal
-  const orderTotal = cart?.data.reduce((total, item) => {
+  const orderTotal =   cart.data&&cart?.data.reduce((total, item) => {
     return total + calculateTotalPrice(item);
   }, 0);
   
-
-
- 
-
-  // delete an item
+// delete an item
   const handleDelete =  async (item) => {
     Swal.fire({
       title: "Are you sure?",

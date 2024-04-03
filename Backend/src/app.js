@@ -17,9 +17,11 @@ app.use(cookieParser());
 
 //import routes
 import cartRouter from "../src/routes/Cart routes.js"
+import userRouter from "../src/routes/User route.js"
 
 //Declare route
 app.use("/api/v1/cart", cartRouter)
+app.use("/api/v1/user",userRouter)
 
 
  export default app
