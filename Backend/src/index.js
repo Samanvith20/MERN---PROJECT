@@ -6,7 +6,9 @@ dotenv.config({
     path: "./env"
 });
 
-
+app.get("/",(req,res)=>{
+    res.send("Hello Foodi-Backend")
+})
 
 ConnectDb()
     .then(() => {

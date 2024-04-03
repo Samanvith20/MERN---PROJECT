@@ -2,12 +2,14 @@ import React, { useContext, useState } from 'react'
 import { FaHeart } from "react-icons/fa";
 import { Link, Navigate } from 'react-router-dom';
 import { AuthContext } from '../../Firebase/AuthProvider';
-import useCart from '../../hooks/usecart';
+
 import Swal from 'sweetalert2'
+import useCart from '../../hooks/useCart';
 const Card = ({item}) => {
     
     const{user}=useContext(AuthContext)
-     const{cart,refetch}=useCart()
+     const[cart,refetch]=useCart()
+       //console.log(cart);
   const [isHeartFilled, setIsHeartFilled] = useState(false);
 
    
@@ -23,7 +25,7 @@ const Card = ({item}) => {
         email: user.email
       };
   
-      fetch("http://localhost:5000/cart", {
+      fetch("http://localhost:5001/api/v1/cart/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

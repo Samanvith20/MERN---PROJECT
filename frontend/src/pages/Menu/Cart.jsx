@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import useCart from "../../hooks/usecart"
+import useCart from "../../hooks/useCart"
 import { AuthContext } from "../../Firebase/AuthProvider"
 import Swal from "sweetalert2";
 import { FaTrash } from "react-icons/fa";
@@ -8,7 +8,8 @@ import axios from "axios";
 
 const CartPage = () => {
   const { user } = useContext(AuthContext);
-  const [cart, refetch] = useCart();
+   const [cart,refetch  ] = useCart();
+   
   const [cartItems, setCartItems] = useState([]);
   // console.log(cartItems)
 
@@ -19,7 +20,7 @@ const CartPage = () => {
   // Handle quantity increase
   const handleIncrease = async (item) => {
     try {
-      const response = await fetch(`http://localhost:5000/carts/${item._id}`, {
+      const response = await fetch(`http://localhost:5001/api/v1/cart/${item._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -37,7 +38,7 @@ const CartPage = () => {
           }
           return cartItem;
         });
-        await refetch();
+        
         setCartItems(updatedCart);
       } else {
         console.error("Failed to update quantity");
@@ -51,7 +52,7 @@ const CartPage = () => {
     if (item.quantity > 1) {
       try {
         const response = await fetch(
-          `http://localhost:5000/carts/${item._id}`,
+          `http://localhost:5001/api/v1/cart/${item._id}`,
           {
             method: "PUT",
             headers: {
@@ -71,7 +72,7 @@ const CartPage = () => {
             }
             return cartItem;
           });
-          await refetch();
+         
           setCartItems(updatedCart);
         } else {
           console.error("Failed to update quantity");
@@ -83,16 +84,16 @@ const CartPage = () => {
   };
 
   // Calculate the cart subtotal
-  const cartSubtotal = cart?.reduce((total, item) => {
+  const orderTotal = cart?.data.reduce((total, item) => {
     return total + calculateTotalPrice(item);
   }, 0);
+  
 
-  // Calculate the order total
-  const orderTotal = cartSubtotal;
-  // console.log(orderTotal)
+
+ 
 
   // delete an item
-  const handleDelete =   (item) => {
+  const handleDelete =  async (item) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -103,9 +104,9 @@ const CartPage = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:5000/carts/${item._id}`).then(response => {
+        axios.delete(`http://localhost:5001/api/v1/cart/${item._id}`).then(response => {
           if (response) {
-            refetch();
+             
              Swal.fire("Deleted!", "Your file has been deleted.", "success");
            }
         })
@@ -133,7 +134,7 @@ const CartPage = () => {
       {/* cart table */}
 
       {
-        (cart.length > 0) ? <div>
+        (cart?.data?.length > 0) ? <div>
         <div className="">
           <div className="overflow-x-auto">
             <table className="table">
@@ -149,7 +150,7 @@ const CartPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {cart.map((item, index) => (
+                {cart?.data?.map((item, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>
@@ -211,7 +212,7 @@ const CartPage = () => {
           </div>
           <div className="md:w-1/2 space-y-3">
             <h3 className="text-lg font-semibold">Shopping Details</h3>
-            <p>Total Items: {cart.length}</p>
+            <p>Total Items: {cart?.data?.length}</p>
             <p>
               Total Price:{" "}
               <span id="total-price">${orderTotal.toFixed(2)}</span>

@@ -1,33 +1,43 @@
-import { useQuery } from '@tanstack/react-query'
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../Firebase/AuthProvider';
-
 
 const useCart = () => {
     const { user } = useContext(AuthContext);
-   
-    const { refetch, data: cart = [] } = useQuery({
-        queryKey: ['cart', user?.email],
-        queryFn: async () => {
-            try {
-                const res = await fetch(`http://localhost:5000/carts?email=${user?.email}`);
+    const [cart, setCart] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const fetchData = async () => {
+        try {
+           
+            const response = await fetch(`http://localhost:5001/api/v1/cart/email?email=${user?.email}`, 
                 
-                if (!res.ok) {
-                    throw new Error('Failed to fetch cart items');
-                }
-
-                const jsonData = await res.json();
-                console.log(jsonData); // This will log the JSON data returned by the server
-
-                return jsonData;
-            } catch (error) {
-                console.error('Error fetching cart items:', error);
-                throw error; // Rethrow the error to be caught by React Query
+            );
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                setCart(data);
+            } else {
+                throw new Error('Failed to fetch data');
             }
-        },
-    });
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    return [cart, refetch];
-}
+    useEffect(() => {
+        if (user?.email) {
+            fetchData();
+        }
+    }, [user?.email]);
+
+    const refetch = async () => {
+       
+     fetchData();
+    };
+
+     return [cart, loading, refetch ] 
+};
 
 export default useCart;
