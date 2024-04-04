@@ -133,7 +133,7 @@ const CartPage = () => {
         (cart?.data?.length > 0) ? <div>
         <div className="">
           <div className="overflow-x-auto">
-            <table className="table">
+            <table className="table overflow-hidden">
               {/* head */}
               <thead className="bg-green text-white rounded-sm">
                 <tr>

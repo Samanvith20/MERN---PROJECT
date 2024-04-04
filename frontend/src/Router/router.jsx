@@ -5,6 +5,12 @@ import Menu from "../pages/Menu/Menu";
 import Signup from "../components/Home/Signup";
 import UserProfile from "../pages/Dashboard/UpdateProfile";
 import Cart from "../pages/Menu/Cart";
+import Dashboardlayout from "../layout/Dashboardlayout";
+import Dashboard from "../pages/Dashboard/admin/Dashboard";
+import Users from "../pages/Dashboard/admin/users";
+import AddMenu from "../pages/Dashboard/admin/addMenu";
+import ManageItems from "../pages/Dashboard/admin/ManageItems";
+import UpdateMenu from "../pages/Dashboard/admin/updateMenu";
 
 const router= createBrowserRouter(
     [
@@ -34,6 +40,38 @@ const router= createBrowserRouter(
     {
         path:"/signup",
         element:<Signup/>
+    },
+    {
+        path:"/dashboard",
+        element:<Dashboardlayout/>,
+        children:[
+            {
+                path: '',
+          element: <Dashboard/>
+        },
+        {
+            path: 'users', 
+          element: <Users/>
+        },
+        {
+            path: 'add-menu',
+            element: <AddMenu/>
+        },
+        {
+            path: "manage-items",
+            element: <ManageItems/>
+        },
+        {
+            path: "update-menu/:id",
+            element: <UpdateMenu/>,
+        }
+    ]
+        
+
+        
+
+        
+
     }
 
 ]

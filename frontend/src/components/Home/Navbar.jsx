@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../Firebase/AuthProvider";
 import Profile from "./Profile";
 import useCart from "../../hooks/useCart";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isSticky, setSticky] = useState(false);
@@ -115,6 +116,7 @@ const Navbar = () => {
               </svg>
             </button>
             {/* Shopping Cart */}
+            <Link to ="/cart">
             <label
               tabIndex={0}
               className="btn btn-ghost btn-circle lg:flex items-center justify-center"
@@ -137,6 +139,7 @@ const Navbar = () => {
                 <span className="badge badge-sm indicator-item">{cart?.data?.length || 0}</span>
               </div>
             </label>
+            </Link>
             {/* login button */}
 
           { 
