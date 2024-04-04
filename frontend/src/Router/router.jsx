@@ -11,6 +11,7 @@ import Users from "../pages/Dashboard/admin/users";
 import AddMenu from "../pages/Dashboard/admin/addMenu";
 import ManageItems from "../pages/Dashboard/admin/ManageItems";
 import UpdateMenu from "../pages/Dashboard/admin/updateMenu";
+import Login from "../components/Home/Login";
 
 const router= createBrowserRouter(
     [
@@ -40,6 +41,10 @@ const router= createBrowserRouter(
     {
         path:"/signup",
         element:<Signup/>
+    },
+    {
+        path:"/login",
+        element:<Login/>
     },
     {
         path:"/dashboard",

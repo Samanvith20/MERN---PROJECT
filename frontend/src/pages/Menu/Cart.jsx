@@ -34,11 +34,13 @@ const CartPage = () => {
             return {
               ...cartItem,
               quantity: cartItem.quantity + 1,
+              
             };
+            
           }
           return cartItem;
         });
-        
+        await refetch()
         setCartItems(updatedCart);
       } else {
         console.error("Failed to update quantity");
@@ -72,7 +74,7 @@ const CartPage = () => {
             }
             return cartItem;
           });
-         
+            await refetch()
           setCartItems(updatedCart);
         } else {
           console.error("Failed to update quantity");
@@ -102,7 +104,7 @@ const CartPage = () => {
       if (result.isConfirmed) {
         axios.delete(`http://localhost:5001/api/v1/cart/${item._id}`).then(response => {
           if (response) {
-             
+             refetch()
              Swal.fire("Deleted!", "Your file has been deleted.", "success");
            }
         })

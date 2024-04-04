@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate, } from "react-router-dom";
 import { FaFacebookF, FaGithub, FaGoogle,  } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Firebase/AuthProvider";
+import axios from "axios";
 
 
 const Signup = () => {
@@ -26,8 +27,17 @@ const Signup = () => {
     createUser(email, password).then((result) => {
       // Signed up 
       const user = result.user;
-      alert("Signin successful!");
+       const Userinfo={
+        name:data?.name,
+         email: data?.email
+       }
+       axios.post("http://localhost:5001/api/v1/user/create",Userinfo)
+       .then(res=>{
+        console.log(res);
+        alert("Signin successful!");
       navigate(from, { replace: true });
+       })
+     
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -41,7 +51,18 @@ const Signup = () => {
       signUpWithGmail()
         .then((result) => {
           const user = result.user;
-          navigate(from, { replace: true });
+          const userInfo = {
+            name: user?.displayName,
+            email: user?.email,
+          };
+          axios
+            .post("http://localhost:5001/api/v1/user/create", userInfo)
+            .then((response) => {
+              // console.log(response);
+              alert("Signin successful!");
+              navigate("/");
+            });
+         
         })
         .catch((error) => console.log(error));
     };

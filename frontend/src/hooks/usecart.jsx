@@ -1,43 +1,28 @@
-import { useContext, useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query'
+import { useContext } from 'react';
 import { AuthContext } from '../Firebase/AuthProvider';
 
 const useCart = () => {
     const { user } = useContext(AuthContext);
-    const [cart, setCart] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // console.log(user.email)
+    const token = localStorage.getItem('access-token')
+    //console.log(token);
 
-    const fetchData = async () => {
-        try {
-           
-            const response = await fetch(`http://localhost:5001/api/v1/cart/email?email=${user?.email}`, 
-                
-            );
-            if (response.ok) {
-                const data = await response.json();
-                console.log(data);
-                setCart(data);
-            } else {
-                throw new Error('Failed to fetch data');
-            }
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if (user?.email) {
-            fetchData();
-        }
-    }, [user?.email]);
-
-    const refetch = async () => {
+    const { refetch, data: cart = [] } = useQuery({
+        
+        queryKey: ['carts', user?.email],
        
-     fetchData();
-    };
+        queryFn: async () => {
+            const res = await fetch(`http://localhost:5001/api/v1/cart/email?email=${user?.email}`, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            return res.json();
+        },
+    })
 
-     return [cart, loading, refetch ] 
-};
+    return [cart, refetch]
 
+}
 export default useCart;

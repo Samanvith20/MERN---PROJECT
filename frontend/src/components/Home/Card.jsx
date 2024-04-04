@@ -70,7 +70,7 @@ const Card = ({item}) => {
         confirmButtonText: 'Login now!'
       }).then((result) => {
         if (result.isConfirmed) {
-          Navigate('/login', {state: {from: location}});
+          Navigate('/signup', {state: {from: location}});
         }
       });
     }

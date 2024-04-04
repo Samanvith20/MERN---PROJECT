@@ -57,7 +57,7 @@ export const deleteUser= AsyncHandler(async(req,res)=>{
 
 // get admin details
 export const getAdmin = AsyncHandler(async (req, res) => {
-    const email = req.query.email;
+    const email = req.decoded.email;
     const query = { email: email };
     try {
         const user = await User.findOne(query);

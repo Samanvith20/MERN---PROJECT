@@ -17,13 +17,13 @@ const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthProvider>
-  {/* <QueryClientProvider client={queryClient}> */}
+  <QueryClientProvider client={queryClient}>
  
   <RouterProvider router={router}/>
  
  
   
-  {/* </QueryClientProvider> */}
+  </QueryClientProvider>
   </AuthProvider>
 
 )
