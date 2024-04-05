@@ -26,6 +26,7 @@ const useAxiosSecure = () => {
       axiosSecure.interceptors.response.use(function (response) {
         return response;
       }, async (error) => {
+        console.log(error);
       const status = error.response.status;
 
       if(status === 401 || status === 403 ){

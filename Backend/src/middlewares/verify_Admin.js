@@ -5,7 +5,7 @@ import { User } from "../models/user.model.js";
     const query ={email: email};
 
     const user = await User.findOne(query);
-    console.log(user);
+    //console.log(user);
     const isAdmin = user?.role == 'admin';
 
     if(!isAdmin){
