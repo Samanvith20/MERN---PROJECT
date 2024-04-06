@@ -3,7 +3,7 @@ import Card from '../../components/Home/Card';
 import { FaFilter } from "react-icons/fa";
 
 const Menu = () => {
-   const [menu, setMenu] = useState();
+   const [menu, setMenu] = useState([]);
    const [filtereditems, setFilteredItems] = useState();
    const [category, setCategory] = useState("all");
    const [sortOption, setSortOption] = useState("default");
@@ -13,9 +13,10 @@ const Menu = () => {
    useEffect(() => {
       const fetchdata = async () => {
          try {
-            const response = await fetch("/menu.json");
+            const response = await fetch("http://localhost:5001/api/v1/menu");
             const data = await response.json();
-            setMenu(data);
+            console.log(data?.data);
+            setMenu(data?.data);
             setFilteredItems(data);
          } catch (error) {
             console.error("Error fetching data:", error);
@@ -32,11 +33,17 @@ const Menu = () => {
    };
    
    const filterItems = (category) => {
-      const filtered = category === "all" ? menu : menu.filter((item) => item.category === category);
-      setFilteredItems(filtered);
-      setCategory(category);
-      setCurrentPage(1);
-   };
+    if (!Array.isArray(menu)) {
+       console.error("Menu is not initialized as an array.");
+       return;
+    }
+ 
+    const filtered = category === "all" ? menu : menu.filter((item) => item.category === category);
+    setFilteredItems(filtered);
+    setCategory(category);
+    setCurrentPage(1);
+ };
+ 
    
    const sortedOptions = (options) => {
       setSortOption(options);
@@ -65,11 +72,11 @@ const Menu = () => {
    // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filtereditems ? filtereditems.slice(indexOfFirstItem, indexOfLastItem) : [];
+  const currentItems = filtereditems && Array.isArray(filtereditems) ? filtereditems.slice(indexOfFirstItem, indexOfLastItem) : [];
 
 
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber)
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // Inline style for all buttons
   const buttonStyle = {

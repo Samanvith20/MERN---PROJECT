@@ -11,6 +11,7 @@
   "author": "Y.Samanvtih Reddy",
   "license": "ISC",
   "dependencies": {
+    "cloudinary": "^2.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -18,6 +19,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.5.0",
     "mongoose": "^8.2.4",
+    "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.0"
   }
 }

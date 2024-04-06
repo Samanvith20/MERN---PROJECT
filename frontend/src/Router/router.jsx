@@ -69,6 +69,7 @@ const router= createBrowserRouter(
         {
             path: "update-menu/:id",
             element: <UpdateMenu/>,
+            loader: ({params}) => fetch(`http://localhost:5001/api/v1/menu/${params.id}`)
         }
     ]
         

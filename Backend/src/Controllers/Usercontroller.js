@@ -61,7 +61,7 @@ export const getAdmin = AsyncHandler(async (req, res) => {
     const query = { email: email };
     try {
         const user = await User.findOne(query);
-        console.log(user);
+        //console.log(user);
         if (!user) {
              throw new ApiError(401,"user details not found")
         }
@@ -82,6 +82,7 @@ export const getAdmin = AsyncHandler(async (req, res) => {
 // Make admin for a user
 export const makeUserAdmin = AsyncHandler(async (req, res) => {
     const userId = req.params.id;
+    console.log(userId);
     try {
         const updatedUser = await User.findByIdAndUpdate(
             userId,

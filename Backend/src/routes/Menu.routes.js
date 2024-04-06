@@ -1,5 +1,6 @@
 import express from "express"
-import { Updatemenu, createMenuItem, deleteMenuItem, getAllMenuItems, singleMenuItems } from "../Controllers/Menucontroller.js"
+import { Updatemenu, createMenuItem, deleteMenuItem, getAllMenuItems, singleMenuItems, uploadimage } from "../Controllers/Menucontroller.js"
+import { upload } from "../middlewares/multer_middleware.js"
 const router= express.Router()
 
 // declare the routes
@@ -8,4 +9,5 @@ const router= express.Router()
  router.route("/update/:id").patch(Updatemenu)
  router.route("/delete/:id").delete(deleteMenuItem)
  router.route("/:id").get(singleMenuItems)
+ router.route("/upload").post(upload.single("image"),uploadimage)
   export default router

@@ -2,6 +2,8 @@ import { Menu } from "../models/Menu.model.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import AsyncHandler from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
+import { uploadToCloudinary } from "../utils/cloudinary.js";
+
  export const getAllMenuItems=AsyncHandler(async(req,res)=>{
     try {
         const menus = await Menu.find({});
@@ -84,3 +86,21 @@ export const createMenuItem = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const uploadimage= AsyncHandler(async(req,res)=>{
+       const file= req.file
+      try {
+         if(!file){
+           throw new ApiError(400," Image is missing")
+         }
+         // Upload the file to Cloudinary
+      const imageUrl = await uploadToCloudinary(file);
+       return res.json(new ApiResponse(200,imageUrl, "Image uploade successfully"))
+      } catch (error) {
+        console.error('Error handling file upload:', error);
+    res.status(500).json({ error: 'Internal server error' });
+        
+      }
+     
+
+})
