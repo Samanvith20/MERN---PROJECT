@@ -8,15 +8,16 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET 
 });
 
-// Example upload function
- export const uploadToCloudinary = async (file) => {
+
+ // upload oncloudinary
+export const uploadToCloudinary = async (file) => {
   try {
     const result = await cloudinary.uploader.upload(file.path);
-    // return result.secure_url;    
-    fs.unlinkSync(file)
-        return result
+    fs.unlinkSync(file.path); // Pass the file path instead of the file object
+    return result.secure_url;
   } catch (error) {
     console.error('Error uploading file to Cloudinary:', error);
     throw error;
   }
 };
+

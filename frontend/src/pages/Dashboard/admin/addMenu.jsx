@@ -4,32 +4,61 @@ import { useForm } from "react-hook-form";
 
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from 'sweetalert2'
+import { uploadToCloudinary } from "../../../../../Backend/src/utils/cloudinary";
 
 
 const AddMenu = () => {
   
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit,reset } = useForm();
   const [imageUrl, setImageUrl] = useState(null);
    const axiosSecure= useAxiosSecure()
-  const onSubmit = async (data) => {
+   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
       formData.append("image", data.image[0]);
-
+  
+      // Upload image to Cloudinary using "/menu/upload" route
       const response = await axiosSecure.post("/menu/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-
+  
       // Set the image URL received from the backend
-      setImageUrl(response.data.data);
-
-      console.log("Image uploaded successfully:", response.data.data);
+      const imageUrl = response.data.data;
+  
+      console.log("Image uploaded successfully:", imageUrl);
+  
+      // If the image was uploaded successfully, construct the menu item object
+      if (imageUrl) {
+        const menuItem = {
+          name: data.name,
+          category: data.category,
+          price: parseFloat(data.price), 
+          recipe: data.recipe,
+          image: imageUrl
+        };
+  
+        // Post menu item to your "/create" route
+        const createMenuItemResponse = await axiosSecure.post('/create', menuItem);
+  
+        if (createMenuItemResponse) {
+          reset(); // Assuming reset() is a function to reset form fields
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your item is inserted successfully!",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      }
     } catch (error) {
       console.error('Error handling file upload:', error);
       // Handle error
     }
+  };
+  
     
   
 
@@ -121,6 +150,6 @@ const AddMenu = () => {
     </div>
   );
 };
-}
+
 
 export default AddMenu;

@@ -31,9 +31,9 @@ import { uploadToCloudinary } from "../utils/cloudinary.js";
   }
  })
 
- //delete Item
+ //delete Items
  export const deleteMenuItem=AsyncHandler(async(req,res)=>{
-    const UserId= req.params.id
+    const UserId= req.params.id.trim()
  try {
       const  deleteMenu= await Menu.findByIdAndDelete(UserId)
       if(!deleteMenu){

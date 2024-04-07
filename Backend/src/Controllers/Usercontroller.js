@@ -98,3 +98,5 @@ export const makeUserAdmin = AsyncHandler(async (req, res) => {
         res.status(500).json(new ApiError(500, "Internal server error"));
     }
 });
+
+

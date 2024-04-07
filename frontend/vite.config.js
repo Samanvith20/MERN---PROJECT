@@ -1,9 +1,8 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-
-
-
+// vite.config.js
+import { defineConfig } from 'vite'
+import nodePolyfills from 'vite-plugin-node-stdlib-browser'
 
 export default defineConfig({
-  plugins: [react()],
-});
+  // other options
+  plugins: [nodePolyfills()]
+})

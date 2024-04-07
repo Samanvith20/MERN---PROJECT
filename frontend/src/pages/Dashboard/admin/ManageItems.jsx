@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import axios from 'axios';
+
 
 const ManageItems = () => {
   const [menu, , refetch] = useMenu();
@@ -22,7 +24,7 @@ const ManageItems = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await axiosSecure.delete(`/menu/delete/${item._id}`);
+        const res = await axios.delete(`http://localhost:5001/api/v1/menu/delete/${item._id}`);
         // console.log(res);
        if(res) {
         refetch();
