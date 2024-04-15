@@ -33,7 +33,8 @@ import { uploadToCloudinary } from "../utils/cloudinary.js";
 
  //delete Items
  export const deleteMenuItem=AsyncHandler(async(req,res)=>{
-    const UserId= req.params.id.trim()
+    const UserId= req.params.id
+    //console.log(UserId);
  try {
       const  deleteMenu= await Menu.findByIdAndDelete(UserId)
       if(!deleteMenu){
@@ -95,7 +96,7 @@ export const uploadimage= AsyncHandler(async(req,res)=>{
          }
          // Upload the file to Cloudinary
       const imageUrl = await uploadToCloudinary(file);
-       return res.json(new ApiResponse(200,imageUrl, "Image uploade successfully"))
+       return res.json(new ApiResponse(200,imageUrl, "Image uploaded successfully"))
       } catch (error) {
         console.error('Error handling file upload:', error);
     res.status(500).json({ error: 'Internal server error' });

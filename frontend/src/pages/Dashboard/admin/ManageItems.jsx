@@ -14,6 +14,7 @@ const ManageItems = () => {
 
   //   handleDeleteItem
   const handleDeleteItem = (item) => {
+    console.log(item);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -23,9 +24,11 @@ const ManageItems = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
+      console.log(result);
       if (result.isConfirmed) {
         const res = await axios.delete(`http://localhost:5001/api/v1/menu/delete/${item._id}`);
         // console.log(res);
+        console.log(item._id);
        if(res) {
         refetch();
         Swal.fire({

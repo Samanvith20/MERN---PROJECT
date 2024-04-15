@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from 'sweetalert2'
-import { uploadToCloudinary } from "../../../../../Backend/src/utils/cloudinary";
+// import { uploadToCloudinary } from "../../../../../Backend/src/utils/cloudinary";
 
 
 const AddMenu = () => {
@@ -26,6 +26,7 @@ const AddMenu = () => {
   
       // Set the image URL received from the backend
       const imageUrl = response.data.data;
+      console.log(imageUrl);
   
       console.log("Image uploaded successfully:", imageUrl);
   
@@ -40,7 +41,7 @@ const AddMenu = () => {
         };
   
         // Post menu item to your "/create" route
-        const createMenuItemResponse = await axiosSecure.post('/create', menuItem);
+        const createMenuItemResponse = await axiosSecure.post('/menu/create', menuItem);
   
         if (createMenuItemResponse) {
           reset(); // Assuming reset() is a function to reset form fields
