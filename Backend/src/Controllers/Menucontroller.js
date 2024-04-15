@@ -4,6 +4,8 @@ import AsyncHandler from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 
+
+//get all Menu items
  export const getAllMenuItems=AsyncHandler(async(req,res)=>{
     try {
         const menus = await Menu.find({});
@@ -20,6 +22,7 @@ import { uploadToCloudinary } from "../utils/cloudinary.js";
  // to get a single MenuItem
  export const singleMenuItems=AsyncHandler(async(req,res)=>{
      const UserId= req.params.id
+     //console.log(UserId);
   try {
        const  SingleMenu= await Menu.findById(UserId)
        if(!SingleMenu){
@@ -27,6 +30,7 @@ import { uploadToCloudinary } from "../utils/cloudinary.js";
        }
        res.status(200).json(new ApiResponse(200,SingleMenu,"fetched the menuItems Successfully"))
   } catch (error) {
+    console.error('Error fetching menu item:', error);
     res.status(500).json(new ApiResponse(500,"Failed to get MenuItem"));
   }
  })
@@ -50,6 +54,7 @@ import { uploadToCloudinary } from "../utils/cloudinary.js";
 
  export const Updatemenu= AsyncHandler(async(req,res)=>{
       const UserId=req.params.id
+      console.log(UserId);
       const { name, recipe, image, category, price} = req.body;
       try {
         const updatedMenu = await Menu.findByIdAndUpdate(UserId, 

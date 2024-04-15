@@ -26,7 +26,7 @@ const AddMenu = () => {
   
       // Set the image URL received from the backend
       const imageUrl = response.data.data;
-      console.log(imageUrl);
+      // console.log(imageUrl);
   
       console.log("Image uploaded successfully:", imageUrl);
   
@@ -44,7 +44,7 @@ const AddMenu = () => {
         const createMenuItemResponse = await axiosSecure.post('/menu/create', menuItem);
   
         if (createMenuItemResponse) {
-          reset(); // Assuming reset() is a function to reset form fields
+          reset();
           Swal.fire({
             position: "top-end",
             icon: "success",
@@ -56,7 +56,7 @@ const AddMenu = () => {
       }
     } catch (error) {
       console.error('Error handling file upload:', error);
-      // Handle error
+     
     }
   };
   

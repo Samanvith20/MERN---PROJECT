@@ -1,27 +1,63 @@
-import React from 'react'
-import { useLoaderData, useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
-
+import React from 'react';
+import { useLoaderData, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { useForm } from 'react-hook-form';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { FaUtensils } from 'react-icons/fa';
 
 const UpdateMenu = () => {
     const item = useLoaderData();
-    console.log(item);
+   
+
     const { register, handleSubmit, reset } = useForm();
     
     const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
 
-    const navigate = useNavigate()
-      const onSubmit= (data)=>{
-          console.log(data);
-      }
-  
-    
-      
-  return (
-    <div className="w-full md:w-[870px] px-4 mx-auto">
+    const onSubmit = async (data) => {
+        //console.log(data);
+        try {
+            const formdata = new FormData();
+            formdata.append("image", data.image[0]);
+            const response = await axiosSecure.post("/menu/upload", formdata, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                }
+            });
+            const imageUrl = response.data.data;
+            
+            console.log("Image updated successfully:", imageUrl);
+            if (imageUrl) {
+                const menuItem = {
+                    name: data.name,
+                    category: data.category,
+                    price: parseFloat(data.price), 
+                    recipe: data.recipe,
+                    image: imageUrl
+                };
+        
+                // Post menu item to your "/create" route
+                const updateMenuItemResponse = await axiosSecure.patch(`/menu/update/${item?.data?._id}`, menuItem);
+
+        
+                if (updateMenuItemResponse) {
+                    reset();
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your item is inserted successfully!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }
+        } catch (error) {
+            console.error('Error handling file upload:', error);
+        }
+    };
+
+    return (
+      <div className="w-full md:w-[870px] px-4 mx-auto">
       <h2 className="text-2xl font-semibold my-4">
         Update This <span className="text-green">Menu Item</span>
       </h2>
@@ -35,7 +71,7 @@ const UpdateMenu = () => {
             </label>
             <input
               type="text"
-              defaultValue={item.name}
+              defaultValue={item?.data?.name}
               {...register("name", { required: true })}
               placeholder="Recipe Name"
               className="input input-bordered w-full "
@@ -52,7 +88,7 @@ const UpdateMenu = () => {
               <select
                 {...register("category", { required: true })}
                 className="select select-bordered"
-                defaultValue={item.category}
+                defaultValue={item?.data?.category}
               >
                 <option disabled value="default">
                   Select a category
@@ -73,7 +109,7 @@ const UpdateMenu = () => {
               </label>
               <input
                 type="number"
-                defaultValue={item.price}
+                defaultValue={item?.data?.price}
                 {...register("price", { required: true })}
                 placeholder="Price"
                 className="input input-bordered w-full"
@@ -87,7 +123,7 @@ const UpdateMenu = () => {
               <span className="label-text">Recipe Details</span>
             </label>
             <textarea
-             defaultValue={item.recipe}
+             defaultValue={item?.data?.recipe}
               {...register("recipe", { required: true })}
               className="textarea textarea-bordered h-24"
               placeholder="Tell the worlds about your recipe"
@@ -111,5 +147,4 @@ const UpdateMenu = () => {
     </div>
   )
 }
-
-export default UpdateMenu
+export default UpdateMenu;
