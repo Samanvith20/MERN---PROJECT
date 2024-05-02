@@ -1,23 +1,41 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
+import { AuthContext } from "../../Firebase/AuthProvider";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import axios from "axios";
 
 const CheckoutForm = ({ cart, price }) => {
-    const [errormessage,setErrormessage]= useState()
+  const { user } = useContext(AuthContext);
+  //console.log(user);
+  
+   const axiosSecure=useAxiosSecure()
+    const [errormessage,setErrormessage]= useState("")
+     const[clientsecret,setClientSecret]=useState("")
+     useEffect(() => {
+      if (typeof price !== "number" || price < 1) {
+          return;
+      }
+      axios.post("http://localhost:5001/create-payment-intent", { price,})
+          .then((res) => {
+              // console.log(res.data.clientSecret);
+              setClientSecret(res.data.clientSecret);
+          })
+          .catch((error) => {
+              // Handle error
+              console.error("Error creating payment intent:", error);
+          });
+  }, [price, axiosSecure]);
+  
+  
     const stripe= useStripe()
     const element=useElements()
     const handleSubmit= async(event)=>{
         event.preventDefault();
         if (!stripe || !element) {
-            // Stripe.js has not loaded yet. Make sure to disable
-            // form submission until Stripe.js has loaded.
+            
             return;
           }
-      
-          // Get a reference to a mounted CardElement. Elements knows how
-          // to find your CardElement because there can only ever be one of
-          // each type of element.
-
           // create a card element
           const card = element.getElement(CardElement);
       
@@ -35,9 +53,48 @@ const CheckoutForm = ({ cart, price }) => {
                 message
                 )
           } else {
-            console.log('[PaymentMethod]', paymentMethod);
+            // console.log('[PaymentMethod]', paymentMethod);
             setErrormessage("Success")
           }
+          const {paymentIntent, error:conformpaymentError} = await stripe.confirmCardPayment(
+            clientsecret,
+            {
+              payment_method: {
+                card:card ,
+                billing_details: {
+                  name: user?.displayName||'anoyomous',
+                  email:user?.email||"Unknown"
+                },
+              },
+              
+            },
+          );
+         
+            if (paymentIntent) {
+            
+              setErrormessage(`your Transaction id is :${paymentIntent.id}`);
+              
+          
+          
+            // paymentInfo details
+            const paymentInfo={
+            email:user.email,
+            transitionid:paymentIntent.id,
+            price,
+            quantity:cart?.data?.length,
+            status:"order-pending",
+           itemName:cart?.data?.map(item=>item?.name),
+           cartItems:cart?.data?.map(item=>item?._id),
+           menuItems:cart?.data?.map(item=>item.menuItemId)
+
+            }
+            console.log(paymentInfo);
+          }
+          else{
+            
+            console.error(conformpaymentError);
+          }
+
     }
   return (
     <div className="flex flex-col md:flex-row justify-start items-start gap-7 ">
