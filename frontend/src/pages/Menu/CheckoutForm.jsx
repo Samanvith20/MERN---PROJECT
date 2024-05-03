@@ -81,7 +81,7 @@ const CheckoutForm = ({ cart, price }) => {
             email:user.email,
             transitionid:paymentIntent.id,
             price,
-            quantity:cart?.data?.length,
+            quantity:cart?.data?.quantity,
             status:"order-pending",
            itemName:cart?.data?.map(item=>item?.name),
            cartItems:cart?.data?.map(item=>item?._id),
@@ -89,6 +89,11 @@ const CheckoutForm = ({ cart, price }) => {
 
             }
             console.log(paymentInfo);
+            // send information to backend using a API request
+            axiosSecure.post("/payment",paymentInfo)
+            .then(res=> 
+              console.log(res.data))
+             alert("Payment Successful")
           }
           else{
             

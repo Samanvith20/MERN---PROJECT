@@ -19,11 +19,12 @@ app.use(cookieParser());
 import cartRouter from "../src/routes/Cart routes.js"
 import userRouter from "../src/routes/User route.js"
 import menuRouter from "../src/routes/Menu.routes.js"
+import  paymentRouter from "../src/routes/Payment routes.js"
 
 //Declare route
 app.use("/api/v1/cart", cartRouter)
 app.use("/api/v1/user",userRouter)
 app.use("/api/v1/menu",menuRouter)
-
+app.use("/api/v1/payment",paymentRouter)
 
  export default app
