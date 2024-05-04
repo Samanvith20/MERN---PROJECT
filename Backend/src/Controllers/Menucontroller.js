@@ -8,7 +8,7 @@ import { uploadToCloudinary } from "../utils/cloudinary.js";
 //get all Menu items
  export const getAllMenuItems=AsyncHandler(async(req,res)=>{
     try {
-        const menus = await Menu.find({});
+        const menus = await Menu.find({}).sort({createdAt:-1});
         if(!menus){
             throw  new ApiError(401, "Does not find the MenuItems ")
         }
@@ -93,6 +93,7 @@ export const createMenuItem = async (req, res) => {
     }
 };
 
+//upload an image
 export const uploadimage= AsyncHandler(async(req,res)=>{
        const file= req.file
       try {

@@ -5,6 +5,7 @@ import { ApiResponse } from "../utils/apiResponse.js";
 import mongoose from "mongoose";
 import { Cart } from "../models/Cart.model.js";
 
+// make a Stripe Payment
 export const stripePayment = AsyncHandler(async(req, res) => {
     try {
         const  payments  = req.body;
@@ -26,9 +27,30 @@ export const stripePayment = AsyncHandler(async(req, res) => {
         // Delete cart items
         const deleteCart = await Cart.deleteMany({ _id: { $in: cartIds } });
 
-        res.status(201).json(new ApiResponse(201, createPayment,deleteCart ));
+        res.status(200).json(new ApiResponse(200, createPayment,deleteCart ));
     } catch (error) {
         console.error("Error while creating a payment:", error);
         res.status(500).json(new ApiError(500, "Payment Failed check your details and try again"));
     }
 });
+
+// Get Orders  for a Payment using the User Email
+export const getAllOrders = AsyncHandler(async (req, res) => {
+    const email = req.query.email;
+    console.log(email);
+    const decodedemail = req.decoded.email;
+    console.log(decodedemail);
+    if (email !== decodedemail) {
+      throw new ApiError(401, "Unauthorized request");
+    }
+    const query = { email: email };
+    console.log(query);
+    try {
+      const getOrderDetails = await Payment.find(query).sort({ createdAt: -1 });
+      console.log(getOrderDetails);
+      res.status(201).json(new ApiResponse(201, "Order Details fetched Successfully", getOrderDetails));
+    } catch (error) {
+      console.error("Error while fetching order details :", error);
+      res.status(500).json(new ApiError(500, "Order Failed check your details and try again"));
+    }
+  });

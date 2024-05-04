@@ -14,6 +14,10 @@ import ManageItems from "../pages/Dashboard/admin/ManageItems";
 import UpdateMenu from "../pages/Dashboard/admin/updateMenu";
 import Login from "../components/Home/Login";
 import Payment from "../pages/Menu/Payment";
+import Order from "../pages/Dashboard/Order";
+import Contact from "../pages/Dashboard/Contact";
+
+
 
 const router= createBrowserRouter(
     [
@@ -34,6 +38,14 @@ const router= createBrowserRouter(
                 element:<Menu/>
             },
             {
+                path: "/order",
+                element:<Order/>
+              },
+              {
+                path:"/contact",
+                element:<Contact/>
+              },
+            {
                 path: "/update-profile",
                 element: <UserProfile/>
               },
@@ -52,6 +64,7 @@ const router= createBrowserRouter(
         path:"/login",
         element:<Login/>
     },
+    
     {
         path:"/dashboard",
         element:<Dashboardlayout/>,
@@ -61,6 +74,7 @@ const router= createBrowserRouter(
                 path: '',
           element: <Dashboard/>
         },
+        
         {
             path: 'users', 
           element: <Users/>
@@ -77,7 +91,8 @@ const router= createBrowserRouter(
             path: "update-menu/:id",
             element: <UpdateMenu/>,
             loader: ({params}) => fetch(`http://localhost:5001/api/v1/menu/${params.id}`)
-        }
+        },
+        
     ]
         
 
