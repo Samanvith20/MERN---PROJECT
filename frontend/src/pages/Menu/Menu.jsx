@@ -15,7 +15,7 @@ const Menu = () => {
          try {
             const response = await fetch("http://localhost:5001/api/v1/menu");
             const data = await response.json();
-            console.log(data?.data);
+            //console.log(data?.data);
             setMenu(data?.data);
             setFilteredItems(data);
          } catch (error) {
@@ -69,6 +69,7 @@ const Menu = () => {
       setFilteredItems(sortedItems);
       setCurrentPage(1);
    };
+   
    // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;

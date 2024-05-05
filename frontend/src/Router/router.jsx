@@ -16,6 +16,7 @@ import Login from "../components/Home/Login";
 import Payment from "../pages/Menu/Payment";
 import Order from "../pages/Dashboard/Order";
 import Contact from "../pages/Dashboard/Contact";
+import ManageBookings from "../pages/Dashboard/ManageBookings";
 
 
 
@@ -92,6 +93,10 @@ const router= createBrowserRouter(
             element: <UpdateMenu/>,
             loader: ({params}) => fetch(`http://localhost:5001/api/v1/menu/${params.id}`)
         },
+        {
+        path:"manage-Bookings",
+        element:<ManageBookings/>
+        }
         
     ]
         

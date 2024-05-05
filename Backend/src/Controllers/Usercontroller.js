@@ -2,6 +2,8 @@ import { User } from "../models/user.model.js";
 import AsyncHandler from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
+
+
 // to get Userdetails
 export const getUser =  AsyncHandler( async (req, res) => {
     try {
@@ -55,7 +57,7 @@ export const deleteUser= AsyncHandler(async(req,res)=>{
 })
 
 
-// get admin details
+// get admin detail
 export const getAdmin = AsyncHandler(async (req, res) => {
     const email = req.decoded.email;
     const query = { email: email };
@@ -100,3 +102,4 @@ export const makeUserAdmin = AsyncHandler(async (req, res) => {
 });
 
 
+ 

@@ -39,9 +39,9 @@ const SpecialDishes = () => {
   const [recipes, setRecipes] = useState([]);
   const slider = React.useRef(null);
    const fetchdata= async()=>{
-     const response= await fetch("/http://localhost:5001/api/v1/menu")
+     const response= await fetch("http://localhost:5001/api/v1/menu")
      const json =  await response.json()
-      console.log(json)
+      // console.log(json)
          const specials= json?.data?.filter((item)=>item.category === "popular")
       setRecipes(specials)
    }

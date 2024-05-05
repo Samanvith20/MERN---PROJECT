@@ -54,3 +54,43 @@ export const getAllOrders = AsyncHandler(async (req, res) => {
       res.status(500).json(new ApiError(500, "Order Failed check your details and try again"));
     }
   });
+
+  // Get all Orders
+  export const GetAllPayments = AsyncHandler(async (req, res) => {
+    try {
+      const AllPayments = await Payment.find({}).sort({ createdAt: -1 }).exec();
+      if (!AllPayments || AllPayments.length === 0) { // Check if AllPayments is empty
+        throw new ApiError(400, "Unable to find all Payments");
+      }
+      res.status(200).json(new ApiResponse(200,AllPayments, "Fetched All Payments Information Successfully"));
+    } catch (error) {
+      console.error("Error while fetching All Payment details:", error);
+      res.status(500).json(new ApiError(500, "Failed to fetch payments. Please check your details and try again."));
+    }
+  });
+  
+  //Update Payemnt
+  export const UpdatePayment= AsyncHandler(async(req,res)=>{
+
+        const PayId= req.params.id
+        console.log(PayId);
+       const {status}= req.body 
+       console.log(status);
+      
+        try {
+           if( !PayId||!status){
+             throw new ApiError(401,"Cannot get the Payment Information")
+           }
+           const paymentInfo= await Payment.findByIdAndUpdate(PayId,{status}
+           ,
+           {
+           new: true, runValidators: true
+           })
+           if(!paymentInfo){
+            throw new ApiError(404,"Cannot find the PaymentInformation")
+           }
+            res.status(201).json(new ApiResponse(201,paymentInfo,"Payment updated Successfully"))
+        } catch (error) {
+          res.status(500).json(new ApiError(500,"Updating the Payment was failed"));
+        }
+      })
