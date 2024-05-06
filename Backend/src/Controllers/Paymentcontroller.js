@@ -37,17 +37,17 @@ export const stripePayment = AsyncHandler(async(req, res) => {
 // Get Orders  for a Payment using the User Email
 export const getAllOrders = AsyncHandler(async (req, res) => {
     const email = req.query.email;
-    console.log(email);
+    // console.log(email);
     const decodedemail = req.decoded.email;
-    console.log(decodedemail);
+    
     if (email !== decodedemail) {
       throw new ApiError(401, "Unauthorized request");
     }
     const query = { email: email };
-    console.log(query);
+   
     try {
       const getOrderDetails = await Payment.find(query).sort({ createdAt: -1 });
-      console.log(getOrderDetails);
+     
       res.status(201).json(new ApiResponse(201, "Order Details fetched Successfully", getOrderDetails));
     } catch (error) {
       console.error("Error while fetching order details :", error);
@@ -69,7 +69,8 @@ export const getAllOrders = AsyncHandler(async (req, res) => {
     }
   });
   
-  //Update Payemnt
+  //Update Payemnt( Conform Payment)
+  
   export const UpdatePayment= AsyncHandler(async(req,res)=>{
 
         const PayId= req.params.id
@@ -78,10 +79,8 @@ export const getAllOrders = AsyncHandler(async (req, res) => {
        console.log(status);
       
         try {
-           if( !PayId||!status){
-             throw new ApiError(401,"Cannot get the Payment Information")
-           }
-           const paymentInfo= await Payment.findByIdAndUpdate(PayId,{status}
+           
+           const paymentInfo= await Payment.findByIdAndUpdate(PayId,{status:"confirmed"}
            ,
            {
            new: true, runValidators: true
@@ -93,4 +92,18 @@ export const getAllOrders = AsyncHandler(async (req, res) => {
         } catch (error) {
           res.status(500).json(new ApiError(500,"Updating the Payment was failed"));
         }
+      })
+
+      //delete the Order
+      export const deletePayment=AsyncHandler(async(req,res)=>{
+         const payId=req.params.id
+         try {
+             const deleteOrder= await Payment.findByIdAndDelete(payId)
+             if(!deleteOrder){
+               throw new ApiError(400,"Payment was not deleted Successfully")
+             }
+             res.send(200).json(new ApiResponse(200,deleteOrder,"Order was deleted Successfully"))
+         } catch (error) {
+          res.status(500).json(new ApiError(500,"Deleting the Payment was failed"));
+         }
       })

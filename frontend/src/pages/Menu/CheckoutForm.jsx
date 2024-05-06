@@ -4,12 +4,12 @@ import { useState } from "react";
 import { AuthContext } from "../../Firebase/AuthProvider";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 const CheckoutForm = ({ cart, price }) => {
   const { user } = useContext(AuthContext);
   //console.log(user);
-  
+   const navigate=useNavigate()
    const axiosSecure=useAxiosSecure()
     const [errormessage,setErrormessage]= useState("")
      const[clientsecret,setClientSecret]=useState("")
@@ -95,7 +95,7 @@ const CheckoutForm = ({ cart, price }) => {
             .then(res=> 
               console.log(res.data))
              alert("Payment Successful")
-             Navigate("/order")
+             navigate("/order")
           }
           else{
             

@@ -62,7 +62,7 @@ const Order = () => {
                                             <td>{index + 1}</td>
                                             <td>{formatdata(item.createdAt)}</td>
                                             <td>{item._id}</td>
-                                            <td>{item.price}</td>
+                                            <td>${item.price}</td>
                                             <td>{item.status}</td>
                                             <td>
                                                 {/* Your action button */}

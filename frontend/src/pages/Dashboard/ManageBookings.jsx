@@ -3,6 +3,7 @@ import React from 'react';
 import { GiConfirmed } from "react-icons/gi";
 import { MdDelete } from 'react-icons/md';
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import Swal from 'sweetalert2'
 
 const ManageBookings = () => {
     const token = localStorage.getItem('access-token');
@@ -23,33 +24,44 @@ const ManageBookings = () => {
 
     const handleOrder = async (item) => {
         try {
-            const { 
-                status
-                , _id } = item;
-    
-            // Send a PATCH request to update the payment with the ID of the given item
-            const response = await fetch(`http://localhost:5001/api/v1/payment/${_id}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    status
-                    : 'Confirmed' }) // Update status as needed
-            });
-    
-            const responseData = await response.json();
-    
-            console.log(responseData);
+           
+             await axiosSecure.put(`/payment/${item._id}`)
+             .then((res)=>  console.log(res.data))
+             Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Payment confirmed",
+                showConfirmButton: false,
+                timer: 1500
+              });
+              refetch()
         } catch (error) {
             console.error(error);
         }
     };
+
+
+    const deleteOrder=(item)=>{
+         try {
+            // console.log(item);
+            axiosSecure.delete(`/payment/${item._id}`)
+            .then(res=>console.log(res.data))
+            Swal.fire({
+                title: "Delete Order",
+                text: "Are you sure you want to delete this order?",
+                icon: "question"
+              });
+               refetch()
+         } catch (error) {
+            console.error(error)
+         }
+
+    }  
     
     
   
     
-       console.log(Payments.data);
+    //    console.log(Payments.data);
     return (
         <div>
             <div className="flex items-center justify-between m-4">
@@ -79,7 +91,7 @@ const ManageBookings = () => {
                                     <th>{index + 1}</th>
                                     <td>{user.email}</td>
                                     <td>{user._id}</td>
-                                    <td>{user.price}</td>
+                                    <td>${user.price}</td>
                                     <td>{user.status}</td>
                                     <td className='text-center'>
                                         {
@@ -94,7 +106,9 @@ const ManageBookings = () => {
                                     </td>
 
                                     <td>
-                                        <button className='btn btn-xs bg-orange-400 text-white'>
+                                        <button 
+                                        onClick={()=>deleteOrder(user)}
+                                        className='btn btn-xs bg-orange-400 text-white'>
                                             <MdDelete />
                                         </button>
                                     </td>

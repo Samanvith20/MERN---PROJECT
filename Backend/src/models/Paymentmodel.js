@@ -19,7 +19,7 @@ import mongoose ,{Schema}from "mongoose"
         },
         status: {
             type: String,
-            enum: ['order-pending', 'order-completed', 'order-cancelled'], // Assuming these are the possible status values
+            enum: ['order-pending', 'order-completed', 'order-cancelled','confirmed'], 
             
         },
         itemName: Array,
