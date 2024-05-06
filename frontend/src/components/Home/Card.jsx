@@ -84,7 +84,8 @@ const Card = ({item}) => {
   };
 
   return (
-    <div to={`/menu/${item._id}`} className="card shadow-xl relative mr-5 md:my-5">
+    <div to={`/menu/${item._id}`} 
+    className="card shadow-xl relative mr-5 md:my-5">
     <div
       className={`rating gap-1 absolute right-2 top-2 p-4 heartStar bg-green ${
         isHeartFilled ? "text-rose-500" : "text-white"
