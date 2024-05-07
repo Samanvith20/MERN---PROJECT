@@ -7,7 +7,7 @@ const router= express.Router()
 // declare the routes
  router.route("/").get(getAllMenuItems)
  router.route("/create").post(createMenuItem)
- router.route("/update/:id").patch(Updatemenu)
+ router.route("/update/:id").put(Updatemenu)
  router.route("/delete/:id").delete(deleteMenuItem)
  router.route("/:id").get(singleMenuItems)
  router.route("/upload").post(upload.single("image"),uploadimage)

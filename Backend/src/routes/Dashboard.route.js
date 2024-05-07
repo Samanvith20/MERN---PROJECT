@@ -1,5 +1,6 @@
 import express from "express"
-import { Dashboardlayout } from "../Controllers/Dashboardcontroller.js"
+import { Dashboardlayout, dashboardstats } from "../Controllers/Dashboardcontroller.js"
 const router= express.Router()
 router.route("/").get(Dashboardlayout)
+router.route("/status").get(dashboardstats)
  export default router

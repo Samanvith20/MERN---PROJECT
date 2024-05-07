@@ -83,7 +83,7 @@ export const getAdmin = AsyncHandler(async (req, res) => {
 
 // Make admin for a user
 export const makeUserAdmin = AsyncHandler(async (req, res) => {
-    const userId = req.params.id;
+    const userId = req.params.id.trim();
     console.log(userId);
     try {
         const updatedUser = await User.findByIdAndUpdate(

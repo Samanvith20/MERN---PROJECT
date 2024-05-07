@@ -36,8 +36,8 @@ const UpdateMenu = () => {
                     image: imageUrl
                 };
         
-                // Post menu item to your "/create" route
-                const updateMenuItemResponse = await axiosSecure.patch(`/menu/update/${item?.data?._id}`, menuItem);
+                // update menu item to your "/put" route
+                const updateMenuItemResponse = await axiosSecure.put(`/menu/update/${item?.data?._id}`, menuItem);
 
         
                 if (updateMenuItemResponse) {

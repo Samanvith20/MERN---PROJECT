@@ -10,6 +10,6 @@ import { verifyAdmin } from "../middlewares/verify_Admin.js"
  router.route("/create").post(  createUser)
 router.route("/delete/:id").delete( verifyJWT,verifyAdmin,deleteUser)
 router.route("/admin/:email").get( verifyJWT,verifyAdmin,getAdmin);
-router.route("/update/:id").patch(verifyJWT,verifyAdmin,makeUserAdmin)
+router.route("/update/:id").put(verifyJWT,verifyAdmin,makeUserAdmin)
 
  export default router

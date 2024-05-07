@@ -18,7 +18,7 @@ const axiosSecure=useAxiosSecure()
   // console.log(users);
   //  console.log(users?.data);
   const handleMakeAdmin = (user) => {
-    axiosSecure.patch(`/user/update/${user?._id}`).then((res) => {
+    axiosSecure.put(`/user/update/${user?._id}`).then((res) => {
       console.log(user._id);
       alert(`${user.name} is now admin`);
       refetch();
