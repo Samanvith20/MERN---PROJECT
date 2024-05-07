@@ -17,7 +17,7 @@ const CheckoutForm = ({ cart, price }) => {
       if (typeof price !== "number" || price < 1) {
           return;
       }
-      axios.post("http://localhost:5001/create-payment-intent", { price,})
+      axios.post("https://foodi-backend-1.onrender.com/create-payment-intent", { price,})
           .then((res) => {
               // console.log(res.data.clientSecret);
               setClientSecret(res.data.clientSecret);

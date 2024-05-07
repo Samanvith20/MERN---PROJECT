@@ -25,7 +25,7 @@ const Card = ({item}) => {
         email: user.email
       };
   
-      fetch("http://localhost:5001/api/v1/cart/add", {
+      fetch("https://foodi-backend-1.onrender.com/api/v1/cart/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

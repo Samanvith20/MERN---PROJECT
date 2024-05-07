@@ -74,9 +74,9 @@ export const getAllOrders = AsyncHandler(async (req, res) => {
   export const UpdatePayment= AsyncHandler(async(req,res)=>{
 
         const PayId= req.params.id
-        console.log(PayId);
+        // console.log(PayId);
        const {status}= req.body 
-       console.log(status);
+      //  console.log(status);
       
         try {
            
